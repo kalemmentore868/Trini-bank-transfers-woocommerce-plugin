@@ -143,4 +143,10 @@ class WC_Gateway_BankTransfer_Hexakode extends WC_Payment_Gateway {
         WC()->cart->empty_cart();
         return ['result' => 'success', 'redirect' => $this->get_return_url($order)];
     }
+
+    public function email_instructions( $order, $sent_to_admin, $plain_text = false ) {
+		if ( $this->instructions && ! $sent_to_admin && $this->id === $order->get_payment_method() ) {
+			echo wp_kses_post( wpautop( wptexturize( $this->instructions ) ) . PHP_EOL );
+		}
+	}
 }
